@@ -16,7 +16,7 @@ const toggleBold = toggleMarkCommand(schema.marks.strong)
 const toggleItalic = toggleMarkCommand(schema.marks.em)
 
 const ydoc = new Y.Doc()
-const provider = new WebsocketProvider('wss://https://pm-demo-jjxgb70f2-cindywu.vercel.app/', 'cindy-room', ydoc)
+const provider = new WebsocketProvider('wss://demos.yjs.dev', 'cindy-room', ydoc)
 const type = ydoc.getXmlFragment('prosemirror')
 
 provider.on('status', (event: any) => {
