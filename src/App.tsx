@@ -2,21 +2,33 @@
 import 'prosemirror-view/style/prosemirror.css'
 import './styles.css'
 
+import * as Y from 'yjs'
+import { WebsocketProvider } from 'y-websocket'
+import { ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
 import { schema } from 'prosemirror-schema-basic'
 import { keymap } from 'prosemirror-keymap'
 import { baseKeymap, Command, toggleMark } from 'prosemirror-commands'
 import { MarkType } from 'prosemirror-model'
-import { history, redo, undo } from 'prosemirror-history'
 import { useProseMirror, ProseMirror } from 'use-prosemirror'
 import { EditorState, Transaction } from 'prosemirror-state'
 
 const toggleBold = toggleMarkCommand(schema.marks.strong)
 const toggleItalic = toggleMarkCommand(schema.marks.em)
 
+const ydoc = new Y.Doc()
+const provider = new WebsocketProvider('ws://pm-demo.vercel.app', 'cindy-room', ydoc)
+const type = ydoc.getXmlFragment('prosemirror')
+
+provider.on('status', (event: any) => {
+  console.log(event.status) // logs "connected" or "disconnected"
+})
+
 const opts: Parameters<typeof useProseMirror>[0] = {
   schema,
   plugins: [
-    history(),
+    ySyncPlugin(type),
+    yCursorPlugin(provider.awareness),
+    yUndoPlugin(),
     keymap({
       ...baseKeymap,
       "Mod-z": undo,
@@ -106,4 +118,3 @@ function Button(props: {
     props.onClick()
   }
 }
-
