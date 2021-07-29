@@ -44,23 +44,7 @@ export default function App() {
   const [state, setState] = useProseMirror(opts);
   return (
     <div className="App">
-      <div className="Menu">
-        <Button
-          className="bold"
-          isActive={isBold(state)}
-          onClick={() => toggleBold(state, (tr) => setState(state.apply(tr)))}
-        >
-          B
-        </Button>
-        <Button
-          className="italic"
-          isActive={isItalic(state)}
-          onClick={() => toggleItalic(state, (tr) => setState(state.apply(tr)))}
-        >
-          I
-        </Button>
-      </div>
-      <div className="ProseMirrorContainer">
+      <div className="ProseMirrorContainer" spellCheck="false">
         <ProseMirror
           className="ProseMirror"
           state={state}
@@ -94,27 +78,27 @@ function isMarkActive(state: EditorState, mark: MarkType): boolean {
     : state.doc.rangeHasMark(from, to, mark)
 }
 
-function Button(props: {
-  children: React.ReactNode
-  isActive: boolean
-  className: string
-  onClick: () => void
-}) {
-  return (
-    <button
-      className={props.className}
-      style={{
-        backgroundColor: props.isActive ? "#efeeef" : "#fff",
-        color: props.isActive ? "blue" : "black"
-      }}
-      onMouseDown={handleMouseDown}
-    >
-      {props.children}
-    </button>
-  )
+// function Button(props: {
+//   children: React.ReactNode
+//   isActive: boolean
+//   className: string
+//   onClick: () => void
+// }) {
+//   return (
+//     <button
+//       className={props.className}
+//       style={{
+//         backgroundColor: props.isActive ? "#efeeef" : "#fff",
+//         color: props.isActive ? "blue" : "black"
+//       }}
+//       onMouseDown={handleMouseDown}
+//     >
+//       {props.children}
+//     </button>
+//   )
 
-  function handleMouseDown(e: React.MouseEvent) {
-    e.preventDefault() // Prevent editor losing focus
-    props.onClick()
-  }
-}
+//   function handleMouseDown(e: React.MouseEvent) {
+//     e.preventDefault() // Prevent editor losing focus
+//     props.onClick()
+//   }
+// }
